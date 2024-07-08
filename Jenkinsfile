@@ -10,7 +10,7 @@ pipeline
     {
         APP_NAME = "DOCKER"
         RELEASE = "1.0.0"
-        DOCKER_USER = "sourev21naskar"
+        DOCKER_USER = "sourav21naskar"
         DOCKER_PASS = "Sourav@21"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
