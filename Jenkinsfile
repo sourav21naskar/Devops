@@ -6,6 +6,15 @@ pipeline
       jdk 'java17'
      maven 'Maven3'
   }
+    enviorment
+    {
+        APP_NAME = "DOCKER"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "sourev21naskar"
+        DOCKER_PASS = "Sourav@21"
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
   stages
   {
     stage("Cleanup Workspace")
@@ -36,19 +45,19 @@ pipeline
                 sh "mvn test"
           }
       }
-      stage("SonarQube Analysis")
-      {
-          steps
-          {
-              script
-              {
-                  withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token')
-                  {
-                      sh "mvn sonar:sonar"
-                  }
-              }
-          }
-      }
+      stage("Build & Push Docker Image") {
+             steps {
+                 script {
+                     docker.withRegistry('',DOCKER_PASS) {
+                         docker_image = docker.build "${IMAGE_NAME}"
+                     }
+                     docker.withRegistry('',DOCKER_PASS) {
+                         docker_image.push("${IMAGE_TAG}")
+                         docker_image.push('latest')
+                     }
+                 }
+             }
+         }
     }
   }
 
