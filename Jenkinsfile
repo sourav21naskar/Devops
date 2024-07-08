@@ -6,7 +6,7 @@ pipeline
       jdk 'java17'
      maven 'Maven3'
   }
-    enviorment
+    environment 
     {
         APP_NAME = "DOCKER"
         RELEASE = "1.0.0"
